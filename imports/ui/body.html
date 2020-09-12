@@ -1,0 +1,163 @@
+<head>
+  <title>Trivia</title>
+</head>
+
+<body>
+  <div class="container container-fluid">
+    {{> quiz}}
+  </div>
+</body>
+
+<template name="quiz">
+  {{#if nombre}}
+    <div class="titulo">Trivia! - {{nombre}}</div>
+
+    <br>
+    {{#if muestraParticipantes}}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Puntaje</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each participante in participantes}}
+            <tr>
+              <td>{{participante.nombre}}</td>
+              <td>{{participante.puntos}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    {{else}}
+      <div class="card">
+        <div class="card-header">
+          {{preguntaActual}}
+        </div>
+        <ul class="list-group">
+          {{#each alternativa in alternativas}}
+            <li class="list-group-item js-alternativa {{marcar @index}}" value={{@index}}>{{alternativa}}</li>
+          {{/each}}
+        </ul>
+      </div>
+    {{/if}}
+
+  {{else}}
+    <div class="titulo">Trivia!</div>
+    <h3>Ingresa tu nombre:</h3>
+    <input type="text" class="form-control js-nombre" value="{{nombre}}">
+  {{/if}}
+
+  {{#if isAdmin}}
+    <hr>
+    <button type="button" class="btn btn-primary js-muestraCorrecta">Mostrar correcta</button>
+    <button type="button" class="btn btn-primary js-muestraParticipantes">Mostrar participantes</button>
+
+    <div class="form-check float-right">
+      <input type="checkbox" class="form-check-input" id="quiereBorrar">
+      <label class="form-check-label">Borrar</label>
+    </div>
+
+    <br><br>
+
+    <div class="row">
+      <div class="col">
+        <ul class="list-group">
+          {{#each listaPreguntas}}
+            <li class="list-group-item js-mostrarPregunta {{preguntaActiva @index}}">
+              {{numero}}. {{pregunta}}
+              <button class="btn btn-danger btn-sm js-borraPregunta {{puedeBorrar}}" value="{{numero}}">Borrar</button>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+      <div class="col">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Respuesta</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each respuesta in respuestas}}
+              <tr>
+                <td>{{respuesta.nombre}}</td>
+                <td>{{respuesta.respuesta}}</td>
+                <td><button class="btn btn-danger js-borraParticipante {{puedeBorrar}}" value="{{respuesta.nombre}}">Borrar</button></td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="form-check float-right">
+      <input type="checkbox" class="form-check-input" id="quiereAgregarPreguntas">
+      <label class="form-check-label">Agregar preguntas</label>
+    </div>
+
+    {{#if agregaPreguntas}}
+      <h4>Agregar pregunta:</h4>
+      <form id="nuevaPreguntaForm">
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Número:</span>
+          </div>
+          <input type="number" class="form-control" name="numero">
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Pregunta</span>
+          </div>
+          <input type="text" class="form-control" name="nuevaPregunta">
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">1:</span>
+          </div>
+          <input type="text" class="form-control" name="alt1">
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">2:</span>
+          </div>
+          <input type="text" class="form-control" name="alt2">
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">3:</span>
+          </div>
+          <input type="text" class="form-control" name="alt3">
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">4:</span>
+          </div>
+          <input type="text" class="form-control" name="alt4">
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Correcta</span>
+          </div>
+          <input type="text" class="form-control" name="correcta">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </form>
+    {{/if}}
+
+  {{/if}}
+</template>

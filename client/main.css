@@ -1,0 +1,27 @@
+.titulo {
+  background-color: #B5C7D3;
+  color: white;
+  width: 100%;
+  padding: 10px;
+  font-size: 2em;
+  font-weight: bold;
+  border-radius: 0px 0px 5px 5px;
+}
+
+.seleccionada {
+  background-color: #FFE !important;
+  color: black;
+}
+
+.correcta {
+  background-color: #DFD !important;
+  color: black;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.invisible {
+  visibility: hidden;
+}
