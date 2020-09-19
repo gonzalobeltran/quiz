@@ -21,8 +21,7 @@ Template.quiz.onCreated(function quizOnCreated() {
   });
 
   Session.set('nombre','');
-  Session.set('puedeBorrar', false);
-  Session.set('agregaPreguntas', false);
+  Session.set('editar', false);
 
 });
 
@@ -68,7 +67,7 @@ Template.quiz.helpers({
     return Session.get('nombre') == 'Gonzalo-k93n8f';
   },
   listaPreguntas() {
-    let preguntas = Preguntas.find();
+    let preguntas = Preguntas.find({},{sort: {numero: 1}});
     return preguntas;
   },
   participantes() {
@@ -93,7 +92,7 @@ Template.quiz.helpers({
     let participantes = [];
     for (n in nombres) {
       let respuesta = -1;
-      Participantes.find({nombre: nombres[n], numero:Session.get('numero')}).fetch().map( (x) => { respuesta = x.respuesta; });
+      Participantes.find({nombre: nombres[n], numero:Session.get('numero')}).fetch().map( (x) => { respuesta = x.texto; });
       participantes.push({
         nombre: nombres[n],
         respuesta: respuesta,
@@ -102,15 +101,10 @@ Template.quiz.helpers({
     return participantes;
   },
 
-  puedeBorrar() {
-    if (Session.get('puedeBorrar')) return 'visible';
-    return 'invisible';
+  editar() {
+    return Session.get('editar');
   },
 
-  agregaPreguntas() {
-    if (Session.get('agregaPreguntas')) return true;
-    return false;
-  },
 });
 
 Template.quiz.events({
@@ -121,7 +115,7 @@ Template.quiz.events({
   'click .js-alternativa'(event) {
     if (Session.get('muestraCorrecta')) return '';
     respuesta = event.target.value;
-    Meteor.call('GuardaRespuesta', Session.get('nombre'), Session.get('numero'), respuesta);
+    Meteor.call('GuardaRespuesta', Session.get('nombre'), Session.get('numero'), respuesta, event.target.innerText);
   },
   'click .js-muestraCorrecta'(event) {
     Meteor.call('MuestraCorrecta');
@@ -132,22 +126,26 @@ Template.quiz.events({
   'click .js-mostrarPregunta'(event) {
     Meteor.call('CambiaActiva', this.numero);
   },
-  'click #quiereBorrar'(event) {
-    Session.set('puedeBorrar',event.target.checked);
+  'click .js-siguientePregunta'(event) {
+    Meteor.call('SiguientePregunta', Session.get('numero'));
   },
-  'click #quiereAgregarPreguntas'(event) {
-    Session.set('agregaPreguntas',event.target.checked);
+  'click #editar'(event) {
+    Session.set('editar',event.target.checked);
   },
   'click .js-borraParticipante'(event) {
     Meteor.call('BorraParticipante', event.target.value);
   },
-  'click .js-borraPregunta'(event) {
-    Meteor.call('BorraPregunta', event.target.value);
+  'click .js-borraPregunta'() {
+    Meteor.call('BorraPregunta', this.numero);
+  },
+  'change .js-nuevoNumero'(event) {
+    nuevoNumero = parseInt(event.target.value);
+    Meteor.call('CambiaNumero', this.numero, nuevoNumero);
   },
   'submit #nuevaPreguntaForm'(event, template) {
     event.preventDefault();
     Meteor.call('NuevaPregunta',
-                event.target.numero.value,
+                parseInt(event.target.numero.value),
                 event.target.nuevaPregunta.value,
                 [event.target.alt1.value, event.target.alt2.value, event.target.alt3.value, event.target.alt4.value],
                 event.target.correcta.value - 1);

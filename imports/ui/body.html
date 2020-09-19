@@ -51,12 +51,13 @@
 
   {{#if isAdmin}}
     <hr>
+    <button type="button" class="btn btn-primary js-siguientePregunta">Siguiente pregunta</button>
     <button type="button" class="btn btn-primary js-muestraCorrecta">Mostrar correcta</button>
     <button type="button" class="btn btn-primary js-muestraParticipantes">Mostrar participantes</button>
 
     <div class="form-check float-right">
-      <input type="checkbox" class="form-check-input" id="quiereBorrar">
-      <label class="form-check-label">Borrar</label>
+      <input type="checkbox" class="form-check-input" id="editar">
+      <label class="form-check-label">Editar</label>
     </div>
 
     <br><br>
@@ -67,7 +68,11 @@
           {{#each listaPreguntas}}
             <li class="list-group-item js-mostrarPregunta {{preguntaActiva @index}}">
               {{numero}}. {{pregunta}}
-              <button class="btn btn-danger btn-sm js-borraPregunta {{puedeBorrar}}" value="{{numero}}">Borrar</button>
+              {{#if editar}}
+                <br>
+                <button class="btn btn-danger btn-sm js-borraPregunta">Borrar</button>
+                <input type="number" class="js-nuevoNumero" value={{numero}}>
+              {{/if}}
             </li>
           {{/each}}
         </ul>
@@ -86,7 +91,11 @@
               <tr>
                 <td>{{respuesta.nombre}}</td>
                 <td>{{respuesta.respuesta}}</td>
-                <td><button class="btn btn-danger js-borraParticipante {{puedeBorrar}}" value="{{respuesta.nombre}}">Borrar</button></td>
+                <td>
+                  {{#if editar}}
+                    <button class="btn btn-danger js-borraParticipante" value="{{respuesta.nombre}}">Borrar</button>
+                  {{/if}}
+                </td>
               </tr>
             {{/each}}
           </tbody>
@@ -97,12 +106,7 @@
 
     <hr>
 
-    <div class="form-check float-right">
-      <input type="checkbox" class="form-check-input" id="quiereAgregarPreguntas">
-      <label class="form-check-label">Agregar preguntas</label>
-    </div>
-
-    {{#if agregaPreguntas}}
+    {{#if editar}}
       <h4>Agregar pregunta:</h4>
       <form id="nuevaPreguntaForm">
 
