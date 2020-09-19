@@ -101,6 +101,7 @@ Template.quiz.helpers({
 
   respuestas() {
     let nombres = _.uniq( Participantes.find({}, {sort: {nombre: 1}}).fetch().map( (x) => {return x.nombre}) );
+    nombres = _.without(nombres, 'Gonzalo-k93n8f');
     let participantes = [];
     for (n in nombres) {
       let respuesta = -1;
