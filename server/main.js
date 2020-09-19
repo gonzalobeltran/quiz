@@ -12,6 +12,8 @@ Meteor.startup(() => {
       activa: 1,
       muestraCorrecta: 0,
       muestraParticipantes: 0,
+      campana: false,
+      quienCampana: '',
     }
     Estado.insert(estado);
   }

@@ -32,6 +32,14 @@ Meteor.methods({
     Estado.update({}, {$set: {muestraParticipantes: 1}});
   },
 
+  'ActivaCampana'(valor) {
+    Estado.update({}, {$set: {campana: valor}});
+  },
+
+  'TocarCampana'(nombre) {
+    Estado.update({}, {$set: {quienCampana: nombre}});
+  },
+
   'NuevoParticipante'(nombre) {
     Participantes.upsert({nombre: nombre}, {$set: {nombre: nombre}});
   },

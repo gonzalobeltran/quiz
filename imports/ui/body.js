@@ -17,6 +17,8 @@ Template.quiz.onCreated(function quizOnCreated() {
       Session.set('numero', estado.activa);
       Session.set('muestraCorrecta', estado.muestraCorrecta);
       Session.set('muestraParticipantes', estado.muestraParticipantes);
+      Session.set('campana', estado.campana);
+      Session.set('quienCampana', estado.quienCampana);
     }
   });
 
@@ -63,6 +65,14 @@ Template.quiz.helpers({
     return '';
   },
 
+  campana() {
+    return Session.get('campana');
+  },
+
+  quienCampana() {
+    return Session.get('quienCampana');
+  },
+
   isAdmin() {
     return Session.get('nombre') == 'Gonzalo-k93n8f';
   },
@@ -84,6 +94,8 @@ Template.quiz.helpers({
         puntos: puntos
       });
     }
+
+    participantes.sort((a, b) => b.puntos - a.puntos);
     return participantes;
   },
 
@@ -120,6 +132,12 @@ Template.quiz.events({
   'click .js-muestraCorrecta'(event) {
     Meteor.call('MuestraCorrecta');
   },
+  'click .js-tocarCampana'(event) {
+    Meteor.call('TocarCampana', Session.get('nombre'));
+  },
+  'click .js-nuevaCampana'(event) {
+    Meteor.call('TocarCampana', '');
+  },
   'click .js-muestraParticipantes'(event) {
     Meteor.call('MuestraParticipantes');
   },
@@ -131,6 +149,9 @@ Template.quiz.events({
   },
   'click #editar'(event) {
     Session.set('editar',event.target.checked);
+  },
+  'click #campana'(event) {
+    Meteor.call('ActivaCampana',event.target.checked);
   },
   'click .js-borraParticipante'(event) {
     Meteor.call('BorraParticipante', event.target.value);

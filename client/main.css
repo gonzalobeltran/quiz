@@ -9,11 +9,11 @@
 }
 
 .seleccionada {
-  background-color: #FFE !important;
+  background-color: #FFD !important;
   color: black;
 }
 
 .correcta {
-  background-color: #DFD !important;
+  background-color: #CFC !important;
   color: black;
 }

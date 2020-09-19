@@ -10,37 +10,49 @@
 
 <template name="quiz">
   {{#if nombre}}
-    <div class="titulo">Trivia! - {{nombre}}</div>
+    {{#if campana}}
+      <div class="titulo">Si se la sabe, cante! <br> {{nombre}}</div>
 
-    <br>
-    {{#if muestraParticipantes}}
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Puntaje</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each participante in participantes}}
-            <tr>
-              <td>{{participante.nombre}}</td>
-              <td>{{participante.puntos}}</td>
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
+      <br>
+      {{#if quienCampana}}
+        <div class="btn btn-warning">{{quienCampana}}</div>
+      {{else}}
+        <button class="btn btn-primary js-tocarCampana">CAMPANA</button>
+      {{/if}}
+
     {{else}}
-      <div class="card">
-        <div class="card-header">
-          {{preguntaActual}}
+      <div class="titulo">Trivia! - {{nombre}}</div>
+
+      <br>
+      {{#if muestraParticipantes}}
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Puntaje</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each participante in participantes}}
+              <tr>
+                <td>{{participante.nombre}}</td>
+                <td>{{participante.puntos}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      {{else}}
+        <div class="card">
+          <div class="card-header">
+            {{preguntaActual}}
+          </div>
+          <ul class="list-group">
+            {{#each alternativa in alternativas}}
+              <li class="list-group-item js-alternativa {{marcar @index}}" value={{@index}}>{{alternativa}}</li>
+            {{/each}}
+          </ul>
         </div>
-        <ul class="list-group">
-          {{#each alternativa in alternativas}}
-            <li class="list-group-item js-alternativa {{marcar @index}}" value={{@index}}>{{alternativa}}</li>
-          {{/each}}
-        </ul>
-      </div>
+      {{/if}}
     {{/if}}
 
   {{else}}
@@ -54,10 +66,16 @@
     <button type="button" class="btn btn-primary js-siguientePregunta">Siguiente pregunta</button>
     <button type="button" class="btn btn-primary js-muestraCorrecta">Mostrar correcta</button>
     <button type="button" class="btn btn-primary js-muestraParticipantes">Mostrar participantes</button>
+    <button type="button" class="btn btn-primary js-nuevaCampana">Resetar Campana</button>
 
     <div class="form-check float-right">
       <input type="checkbox" class="form-check-input" id="editar">
       <label class="form-check-label">Editar</label>
+    </div>
+
+    <div class="form-check float-right">
+      <input type="checkbox" class="form-check-input" id="campana">
+      <label class="form-check-label">Campana</label>
     </div>
 
     <br><br>
