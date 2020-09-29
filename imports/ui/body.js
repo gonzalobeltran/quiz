@@ -24,6 +24,7 @@ Template.quiz.onCreated(function quizOnCreated() {
 
   Session.set('nombre','');
   Session.set('editar', false);
+  Session.set('admin', 'Marcela');
 
 });
 
@@ -74,7 +75,7 @@ Template.quiz.helpers({
   },
 
   isAdmin() {
-    return Session.get('nombre') == 'Gonzalo-k93n8f';
+    return Session.get('nombre') == Session.get('admin');
   },
   listaPreguntas() {
     let preguntas = Preguntas.find({},{sort: {numero: 1}});
@@ -83,7 +84,7 @@ Template.quiz.helpers({
   participantes() {
     let nombres = _.uniq( Participantes.find({}, {sort: {nombre: 1}}).fetch().map( (x) => {return x.nombre;}) );
 
-    nombres = _.without(nombres, 'Gonzalo-k93n8f');
+    nombres = _.without(nombres, Session.get('admin'));
 
     let participantes = [];
     for (n in nombres) {
@@ -101,7 +102,7 @@ Template.quiz.helpers({
 
   respuestas() {
     let nombres = _.uniq( Participantes.find({}, {sort: {nombre: 1}}).fetch().map( (x) => {return x.nombre}) );
-    nombres = _.without(nombres, 'Gonzalo-k93n8f');
+    nombres = _.without(nombres, Session.get('admin'));
     let participantes = [];
     for (n in nombres) {
       let respuesta = -1;
@@ -167,7 +168,6 @@ Template.quiz.events({
   'submit #nuevaPreguntaForm'(event, template) {
     event.preventDefault();
     Meteor.call('NuevaPregunta',
-                parseInt(event.target.numero.value),
                 event.target.nuevaPregunta.value,
                 [event.target.alt1.value, event.target.alt2.value, event.target.alt3.value, event.target.alt4.value],
                 event.target.correcta.value - 1);

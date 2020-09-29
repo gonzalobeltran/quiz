@@ -66,17 +66,17 @@
     <button type="button" class="btn btn-primary js-siguientePregunta">Siguiente pregunta</button>
     <button type="button" class="btn btn-primary js-muestraCorrecta">Mostrar correcta</button>
     <button type="button" class="btn btn-primary js-muestraParticipantes">Mostrar participantes</button>
-    <button type="button" class="btn btn-primary js-nuevaCampana">Resetar Campana</button>
+    <!-- <button type="button" class="btn btn-primary js-nuevaCampana">Resetar Campana</button> -->
 
     <div class="form-check float-right">
       <input type="checkbox" class="form-check-input" id="editar">
       <label class="form-check-label">Editar</label>
     </div>
 
-    <div class="form-check float-right">
+    <!-- <div class="form-check float-right">
       <input type="checkbox" class="form-check-input" id="campana">
       <label class="form-check-label">Campana</label>
-    </div>
+    </div> -->
 
     <br><br>
 
@@ -89,6 +89,7 @@
               {{#if editar}}
                 <br>
                 <button class="btn btn-danger btn-sm js-borraPregunta">Borrar</button>
+                <label>Cambiar número: </label>
                 <input type="number" class="js-nuevoNumero" value={{numero}}>
               {{/if}}
             </li>
@@ -127,13 +128,6 @@
     {{#if editar}}
       <h4>Agregar pregunta:</h4>
       <form id="nuevaPreguntaForm">
-
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Número:</span>
-          </div>
-          <input type="number" class="form-control" name="numero">
-        </div>
 
         <div class="input-group mb-3">
           <div class="input-group-prepend">

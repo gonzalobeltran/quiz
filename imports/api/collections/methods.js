@@ -5,7 +5,15 @@ import { Participantes } from './collections.js';
 
 Meteor.methods({
 
-  'NuevaPregunta'(numero, pregunta, alternativas, correcta) {
+  'NuevaPregunta'(pregunta, alternativas, correcta) {
+    let ultima = Preguntas.findOne({}, {sort: {numero: -1}, limit: 1});
+    let numero = 1;
+    if (!ultima) {
+      numero = 1;
+    } else {
+      numero = ultima.numero + 1;
+    }
+
     Preguntas.insert({numero: numero, pregunta: pregunta, alternativas: alternativas, correcta: correcta});
   },
 
